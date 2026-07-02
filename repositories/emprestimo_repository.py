@@ -1,0 +1,5 @@
+registrar()
+
+listar()
+
+buscar()
