@@ -1,60 +1,83 @@
-# 📚 Sistema de Gerenciamento de Biblioteca
+#  Sistema de Gerenciamento de Biblioteca
 
-## Integrantes
+Sistema desenvolvido em **Python** utilizando **Programação Orientada a Objetos (POO)** e **PostgreSQL** para gerenciamento de livros, revistas e empréstimos.
 
-- Nome do Integrante 1
-- Nome do Integrante 2
-- Nome do Integrante 3
+O projeto foi desenvolvido como trabalho prático da disciplina de **Engenharia de Software**, tendo como objetivo aplicar conceitos de orientação a objetos, persistência de dados e integração com banco de dados relacional.
 
 ---
 
-## Descrição do Sistema
+#  Integrantes
 
-O Sistema de Gerenciamento de Biblioteca foi desenvolvido em Python utilizando Programação Orientada a Objetos (POO) e PostgreSQL.
-
-O sistema permite o cadastro e gerenciamento de livros e revistas, controle de empréstimos, armazenamento das informações em banco de dados relacional e aplicação de regras de negócio para garantir a integridade dos dados.
-
----
-
-## Tecnologias Utilizadas
-
-- Python 3
-- PostgreSQL
-- Biblioteca psycopg2
+* Nome do Integrante 1
+* Nome do Integrante 2
+* Nome do Integrante 3
 
 ---
 
-## Conceitos de Programação Orientada a Objetos
+# Sumário
 
-O sistema aplica os seguintes conceitos de POO:
-
-- Classes e Objetos
-- Encapsulamento
-- Herança
-- Polimorfismo
-- Classe Abstrata
-- Tratamento de Exceções
-
----
-
-## Funcionalidades
-
-- Cadastro de livros
-- Cadastro de revistas
-- Cadastro de usuários
-- Listagem de itens cadastrados
-- Busca de itens por ISBN
-- Atualização de informações dos itens
-- Exclusão de itens
-- Registro de empréstimos
-- Controle de disponibilidade dos itens
+1. Descrição do Sistema
+2. Tecnologias Utilizadas
+3. Conceitos de POO Aplicados
+4. Funcionalidades
+5. Estrutura do Projeto
+6. Banco de Dados
+7. Regras de Negócio
+8. Como Executar
 
 ---
 
-## Estrutura do Projeto
+#  Descrição do Sistema
+
+O Sistema de Gerenciamento de Biblioteca permite controlar o cadastro de livros e revistas, realizar empréstimos de itens e armazenar todas as informações em um banco de dados PostgreSQL.
+
+O sistema foi desenvolvido utilizando os princípios da Programação Orientada a Objetos, garantindo organização, reutilização de código e facilidade de manutenção.
+
+---
+
+#  Tecnologias Utilizadas
+
+* Python 3
+* PostgreSQL
+* psycopg2
+
+---
+
+#  Conceitos de Programação Orientada a Objetos
+
+Durante o desenvolvimento foram aplicados os seguintes conceitos:
+
+* Classes e Objetos
+* Encapsulamento
+* Herança
+* Polimorfismo
+* Classe Abstrata (`ABC`)
+* Métodos Abstratos (`@abstractmethod`)
+* Sobrescrita do método `__str__`
+* Tratamento de Exceções Personalizadas
+
+---
+
+#  Funcionalidades
+
+O sistema possui as seguintes funcionalidades:
+
+* Cadastro de livros;
+* Cadastro de revistas;
+* Cadastro de usuários;
+* Listagem de todos os itens cadastrados;
+* Busca de itens por ISBN;
+* Atualização dos dados dos itens;
+* Exclusão de itens cadastrados;
+* Registro de empréstimos;
+* Controle automático da disponibilidade dos itens.
+
+---
+
+#  Estrutura do Projeto
 
 ```text
-biblioteca/
+Biblioteca/
 │
 ├── bib.py
 ├── README.md
@@ -63,69 +86,99 @@ biblioteca/
 
 ---
 
-## Banco de Dados
+#  Banco de Dados
 
-O sistema utiliza PostgreSQL para armazenar as informações.
+O sistema utiliza o **PostgreSQL** para persistência das informações.
 
-### Tabelas
+## Tabelas
 
-- tabela_itens
-- tabela_emprestimos
+### tabela_itens
+
+Responsável por armazenar todos os livros e revistas cadastrados.
+
+Campos:
+
+* ISBN (Chave Primária)
+* Título
+* Tipo
+* Autor
+* Edição
+* Disponibilidade
+
+### tabela_emprestimos
+
+Responsável pelo registro dos empréstimos realizados.
+
+Campos:
+
+* ID
+* ID do Usuário
+* ISBN do Item
 
 ---
 
+#  Regras de Negócio
 
-## Regras de Negócio
+| Código | Regra                                                    | Implementação                                                                                                      |
+| ------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| RN01   | Não permitir empréstimo de um item já emprestado.        | O sistema verifica o atributo `_disponivel`. Caso o item esteja indisponível, uma `BibliotecaException` é lançada. |
+| RN02   | Após um empréstimo, o item torna-se indisponível.        | O atributo `_disponivel` é atualizado para `False`.                                                                |
+| RN03   | Todo empréstimo deve ser registrado no banco de dados.   | O método `registrar_emprestimo_no_banco()` registra o empréstimo e atualiza a disponibilidade do item.             |
+| RN04   | Cada item deve possuir um ISBN único.                    | O ISBN é definido como chave primária da tabela `tabela_itens`, evitando registros duplicados.                     |
+| RN05   | As tabelas devem existir antes da utilização do sistema. | O método `preparar_banco()` cria automaticamente as tabelas utilizando `CREATE TABLE IF NOT EXISTS`.               |
+| RN06   | Apenas objetos da biblioteca podem ser emprestados.      | O empréstimo aceita somente objetos derivados da classe abstrata `ItemBiblioteca`.                                 |
+| RN07   | Apenas itens disponíveis podem ser emprestados.          | A disponibilidade é validada antes da realização do empréstimo, garantindo a consistência dos dados.               |
 
-| Código | Regra de Negócio | Implementação |
-|:------:|------------------|---------------|
-| *RN01* | Não permitir que um item já emprestado seja emprestado novamente. | O sistema verifica o atributo _disponivel. Caso o item esteja indisponível, uma BibliotecaException é lançada. |
-| *RN02* | Após a realização de um empréstimo, o item torna-se indisponível. | O atributo _disponivel é alterado para False, indicando que o item está emprestado. |
-| *RN03* | Todo empréstimo deve ser registrado no banco de dados. | O método registrar_emprestimo_no_banco() registra o empréstimo e atualiza o status do item no PostgreSQL. |
-| *RN04* | Cada item da biblioteca deve possuir um ISBN único. | O banco utiliza o ISBN como chave primária. Caso o ISBN já exista, a cláusula ON CONFLICT (isbn) evita a duplicação do registro. |
-| *RN05* | As tabelas do banco de dados devem existir antes da utilização do sistema. | O método preparar_banco() cria automaticamente as tabelas utilizando CREATE TABLE IF NOT EXISTS. |
-| *RN06* | Apenas itens da biblioteca podem ser emprestados. | O empréstimo recebe objetos derivados da classe abstrata ItemBiblioteca, como Livro e Revista. |
-| *RN07* | Apenas itens disponíveis podem ter seu status alterado para emprestado. | A disponibilidade do item é alterada somente após a validação do empréstimo, garantindo a consistência das informações. |
 ---
 
-## Como Executar
+# ▶ Como Executar
 
-### Pré-requisitos
+## Pré-requisitos
 
-- Python 3 instalado.
-- PostgreSQL instalado.
-- Biblioteca `psycopg2` instalada.
+Antes de executar o sistema é necessário possuir:
 
-### Instalação
+* Python 3 instalado;
+* PostgreSQL instalado e em execução;
+* Biblioteca `psycopg2`.
 
-Instale a dependência:
+---
+
+## Instalação
+
+Instale a dependência utilizando o comando:
 
 ```bash
 pip install psycopg2
 ```
 
-### Configuração
+Ou, caso utilize o arquivo de dependências:
 
-No arquivo `bib.py`, configure os dados de conexão com o PostgreSQL:
+```bash
+pip install -r requirements.txt
+```
 
-- Host
-- Database
-- User
-- Password
-- Port
+---
 
-### Execução
+## Configuração do Banco de Dados
 
-Execute o comando abaixo no terminal:
+No arquivo `bib.py`, configure os seguintes parâmetros de conexão:
+
+* Host
+* Database
+* User
+* Password
+* Port
+
+---
+
+## Execução
+
+Execute o programa com o comando:
 
 ```bash
 python bib.py
 ```
 
-Ao iniciar o sistema, as tabelas serão criadas automaticamente caso ainda não existam no banco de dados.
+Na primeira execução, o sistema criará automaticamente as tabelas necessárias no banco de dados, caso ainda não existam.
 
 ---
-
-## Observações
-
-Este projeto foi desenvolvido para a disciplina de Engenharia de Software, utilizando Programação Orientada a Objetos e PostgreSQL, conforme os requisitos propostos pelo professor.
