@@ -8,9 +8,9 @@ O projeto foi desenvolvido como trabalho prático da disciplina de **Engenharia 
 
 #  Integrantes
 
-* Nome do Integrante 1
-* Nome do Integrante 2
-* Nome do Integrante 3
+* GUILHERME
+* JO
+* RAYSSA OLIVEIRA MARTINS DAS CHAGAS
 
 ---
 
@@ -27,107 +27,75 @@ O projeto foi desenvolvido como trabalho prático da disciplina de **Engenharia 
 
 ---
 
-#  Descrição do Sistema
+## Descrição do Sistema
 
-O Sistema de Gerenciamento de Biblioteca permite controlar o cadastro de livros e revistas, realizar empréstimos de itens e armazenar todas as informações em um banco de dados PostgreSQL.
-
-O sistema foi desenvolvido utilizando os princípios da Programação Orientada a Objetos, garantindo organização, reutilização de código e facilidade de manutenção.
+O Sistema de Gerenciamento de Biblioteca foi desenvolvido utilizando a linguagem Python e o banco de dados PostgreSQL, aplicando os principais conceitos de Programação Orientada a Objetos estudados na disciplina. O sistema permite o gerenciamento de livros e revistas, realizando o cadastro dos itens, o controle de empréstimos e o armazenamento das informações em um banco de dados relacional. Além disso, foram implementadas regras de negócio que garantem a integridade dos dados, impedindo, por exemplo, que um item indisponível seja emprestado novamente.
 
 ---
 
-#  Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-* Python 3
-* PostgreSQL
-* psycopg2
+O projeto foi desenvolvido utilizando a linguagem Python como principal tecnologia para implementação da lógica do sistema. Para a persistência dos dados foi utilizado o PostgreSQL, sendo a conexão realizada por meio da biblioteca 'psycopg2', responsável pela comunicação entre a aplicação e o banco de dados.
 
 ---
 
-#  Conceitos de Programação Orientada a Objetos
+## Conceitos de Programação Orientada a Objetos
 
-Durante o desenvolvimento foram aplicados os seguintes conceitos:
+O sistema aplica os seguintes conceitos de POO:
 
-* Classes e Objetos
-* Encapsulamento
-* Herança
-* Polimorfismo
-* Classe Abstrata (`ABC`)
-* Métodos Abstratos (`@abstractmethod`)
-* Sobrescrita do método `__str__`
-* Tratamento de Exceções Personalizadas
+Durante o desenvolvimento do sistema foram aplicados diversos conceitos da Programação Orientada a Objetos. A classe abstrata 'ItemBiblioteca' foi utilizada para definir características comuns entre os itens da biblioteca. As classes Livro e Revista implementam herança ao estender essa classe abstrata, além de demonstrarem polimorfismo por meio da implementação do método 'descrever()'. O encapsulamento foi empregado utilizando o atributo '_disponivel', responsável por controlar a disponibilidade dos itens. Também foi criado um tratamento de exceções personalizado através da classe 'BibliotecaException', garantindo maior segurança durante a execução das operações.
 
 ---
 
-#  Funcionalidades
+## Funcionalidades
 
-O sistema possui as seguintes funcionalidades:
-
-* Cadastro de livros;
-* Cadastro de revistas;
-* Cadastro de usuários;
-* Listagem de todos os itens cadastrados;
-* Busca de itens por ISBN;
-* Atualização dos dados dos itens;
-* Exclusão de itens cadastrados;
-* Registro de empréstimos;
-* Controle automático da disponibilidade dos itens.
+- Cadastro de livros
+- Cadastro de revistas
+- Cadastro de usuários
+- Listagem de itens cadastrados
+- Busca de itens por ISBN
+- Atualização de informações dos itens
+- Exclusão de itens
+- Registro de empréstimos
+- Controle de disponibilidade dos itens
 
 ---
 
-#  Estrutura do Projeto
+## Estrutura do Projeto
 
-```text
-Biblioteca/
+text
+biblioteca/
 │
 ├── bib.py
 ├── README.md
 └── requirements.txt
-```
+
 
 ---
 
-#  Banco de Dados
+## Banco de Dados
 
-O sistema utiliza o **PostgreSQL** para persistência das informações.
+O armazenamento das informações é realizado no PostgreSQL. Durante a primeira execução, o sistema cria automaticamente as tabelas necessárias caso elas ainda não existam. Atualmente são utilizadas as tabelas tabela_itens, responsável pelos livros e revistas cadastrados, e tabela_emprestimos, destinada ao registro dos empréstimos realizados.
 
-## Tabelas
+### Tabelas
 
-### tabela_itens
-
-Responsável por armazenar todos os livros e revistas cadastrados.
-
-Campos:
-
-* ISBN (Chave Primária)
-* Título
-* Tipo
-* Autor
-* Edição
-* Disponibilidade
-
-### tabela_emprestimos
-
-Responsável pelo registro dos empréstimos realizados.
-
-Campos:
-
-* ID
-* ID do Usuário
-* ISBN do Item
+- tabela_itens
+- tabela_emprestimos
 
 ---
 
-#  Regras de Negócio
 
-| Código | Regra                                                    | Implementação                                                                                                      |
-| ------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| RN01   | Não permitir empréstimo de um item já emprestado.        | O sistema verifica o atributo `_disponivel`. Caso o item esteja indisponível, uma `BibliotecaException` é lançada. |
-| RN02   | Após um empréstimo, o item torna-se indisponível.        | O atributo `_disponivel` é atualizado para `False`.                                                                |
-| RN03   | Todo empréstimo deve ser registrado no banco de dados.   | O método `registrar_emprestimo_no_banco()` registra o empréstimo e atualiza a disponibilidade do item.             |
-| RN04   | Cada item deve possuir um ISBN único.                    | O ISBN é definido como chave primária da tabela `tabela_itens`, evitando registros duplicados.                     |
-| RN05   | As tabelas devem existir antes da utilização do sistema. | O método `preparar_banco()` cria automaticamente as tabelas utilizando `CREATE TABLE IF NOT EXISTS`.               |
-| RN06   | Apenas objetos da biblioteca podem ser emprestados.      | O empréstimo aceita somente objetos derivados da classe abstrata `ItemBiblioteca`.                                 |
-| RN07   | Apenas itens disponíveis podem ser emprestados.          | A disponibilidade é validada antes da realização do empréstimo, garantindo a consistência dos dados.               |
+## Regras de Negócio
+
+| Código | Regra de Negócio | Implementação |
+|:------:|------------------|---------------|
+| RN01 | Não permitir que um item já emprestado seja emprestado novamente. | O sistema verifica o atributo _disponivel. Caso o item esteja indisponível, uma BibliotecaException é lançada. |
+| RN02 | Após a realização de um empréstimo, o item torna-se indisponível. | O atributo _disponivel é alterado para False, indicando que o item está emprestado. |
+| RN03 | Todo empréstimo deve ser registrado no banco de dados. | O método registrar_emprestimo_no_banco() registra o empréstimo e atualiza o status do item no PostgreSQL. |
+| RN04 | Cada item da biblioteca deve possuir um ISBN único. | O banco utiliza o ISBN como chave primária. Caso o ISBN já exista, a cláusula ON CONFLICT (isbn) evita a duplicação do registro. |
+| RN05 | As tabelas do banco de dados devem existir antes da utilização do sistema. | O método preparar_banco() cria automaticamente as tabelas utilizando CREATE TABLE IF NOT EXISTS. |
+| RN06 | Apenas itens da biblioteca podem ser emprestados. | O empréstimo recebe objetos derivados da classe abstrata ItemBiblioteca, como Livro e Revista. |
+| RN07 | Apenas itens disponíveis podem ter seu status alterado para emprestado. | A disponibilidade do item é alterada somente após a validação do empréstimo, garantindo a consistência das informações. |
 
 ---
 
