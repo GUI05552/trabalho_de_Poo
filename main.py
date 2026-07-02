@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 import psycopg2
 
-
 # TRATAMENTO DE EXCEÇÕES
 
 class BibliotecaException(Exception):
