@@ -8,7 +8,7 @@ O projeto foi desenvolvido como trabalho prático da disciplina de **Engenharia 
 
 #  Integrantes
 
-* GUILHERME
+* GUILHERME MENDONÇA CASTRO
 * JOANE DE ARAÚJO BATISTA 
 * RAYSSA OLIVEIRA MARTINS DAS CHAGAS
 
