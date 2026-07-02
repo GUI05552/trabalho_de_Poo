@@ -1,0 +1,16 @@
+class LivroRepository:
+
+    def salvar(self):
+        ...
+
+    def listar(self):
+        ...
+
+    def buscar(self):
+        ...
+
+    def atualizar(self):
+        ...
+
+    def excluir(self):
+        ...
