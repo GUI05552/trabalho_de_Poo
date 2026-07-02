@@ -99,7 +99,7 @@ O armazenamento das informações é realizado no PostgreSQL. Durante a primeira
 
 ---
 
-# ▶ Como Executar
+## Como Executar
 
 ## Pré-requisitos
 
